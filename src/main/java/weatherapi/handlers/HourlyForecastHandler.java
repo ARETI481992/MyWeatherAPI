@@ -11,7 +11,10 @@ import kong.unirest.json.JSONObject;
 import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.Forecast;
 import weatherapi.myAPI.HourlyForecast;
-
+/*
+ * Xeirizetai ta reuqests gia tis wriaies kairikes synthikes.
+ * H logikh ths getResponse() einai idia me to CurrentForecastHandler.java
+ */
 public class HourlyForecastHandler extends RequestHandler{
 	private List<Forecast> hourlyForecast;
 	private int responseCode;
@@ -20,7 +23,9 @@ public class HourlyForecastHandler extends RequestHandler{
 		setAPIKey(key);
 		hourlyForecast = new ArrayList<Forecast>();
 	}
-	
+	/*
+	 * Kanei forecast request vasei tou ONOMATOS ths polhs pou theloume.
+	 */
 	@Override
 	public ArrayList<Forecast> getResponse(String place) {
 		int i;

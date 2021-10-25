@@ -12,6 +12,10 @@ import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.DailyForecast;
 import weatherapi.myAPI.Forecast;
 
+/*
+ * Xeirizetai ta reuqests gia tis hmerisies kairikes synthikes.
+ * H logikh ths getResponse() einai idia me to CurrentForecastHandler.java
+ */
 public class DailyForecastHandler extends RequestHandler {	
 	private List<Forecast> dailyForecast;
 	private int responseCode;
@@ -21,6 +25,9 @@ public class DailyForecastHandler extends RequestHandler {
 		dailyForecast = new ArrayList<Forecast>();
 	}
 	
+	/*
+	 * Kanei forecast request vasei tou ONOMATOS ths polhs pou theloume.
+	 */
 	@Override
 	public ArrayList<Forecast> getResponse(String place) {
 		int i;

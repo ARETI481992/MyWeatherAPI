@@ -3,14 +3,24 @@ package weatherapi.myAPI;
 
 import kong.unirest.json.JSONObject;
 
+@SuppressWarnings("serial")
 public class DailyTemperature extends Temperature {
+	//thermokrasia thn mera
 	private Double day; 
+	//elaxisth
     private Double min; 
+    //megisth
     private Double max; 
+    //to vrady
     private Double night; 
+    //nyxtwnei
     private Double eve; 
+    //ksimerwnei
     private Double morn; 
-    
+   
+    /*
+     * ftiaxnei DailyTemperature antikeimeno apo katallilo json object
+     */
     public DailyTemperature(JSONObject temp) {
     	if(temp.get("day").getClass().getSimpleName().equals("Integer")) {    		
     		setDay(convertToDouble((Integer) temp.get("day")));
@@ -54,6 +64,11 @@ public class DailyTemperature extends Temperature {
     	int tem = (int) num;
 		return (double) tem;
     }
+	
+	 
+    /*
+     * getters kai setters
+     */
 
 	@Override
 	public Double getTemperatureDegrees() {

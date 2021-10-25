@@ -4,10 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
 import console.backend.Controller;
 import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.Communicator;
@@ -17,6 +13,8 @@ import weatherapi.myAPI.Forecast;
  * 
  * Einai console-based efarmogh, dhladh o xrhsths dinei eisodo xrhsimopoiwntas to termatiko
  *    kai ta apotelesmata typwnontai episis sto termatiko tou Eclipse. 
+ * Brisketai sto paketo console, to opoio periexei tis classes ths efarmoghs 
+ *    kai OXI tou WeatherAPI mas
  */
 public class App {
 	/*
@@ -257,9 +255,6 @@ public class App {
 			//an epelekse thn epilogh 4, dhladh Back, gyrnaei pisw
 			return;
 		}
-		
-		
-		
 		
 		// wait acknowledgment before returning to the main menu
 		// edw to systhma zhtaei apo ton xrhsth na pathsei enter prin epistrepsei sto vasiko menu

@@ -6,12 +6,23 @@ import java.time.format.DateTimeFormatter;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
+/*
+ * Hmerhsia provlepsh kairou. Dhmiourgeitai apo ena json object to opoio proilthe apo
+ * request gia daily forecast.
+ * Kanei extend thn klash Forecast h opoia periexei tis plhrofories pou exoun aneksarthtws typou
+ * Forecasts.
+ * Deite Forecast.java gia ta diafora pedia.
+ */
+@SuppressWarnings("serial")
 public class DailyForecast extends Forecast{
+	//pithanotita vroxoptwshs
 	private Double pop;
 
     public DailyForecast(JSONObject forecast) {
     	setDt((Integer) forecast.get("dt"));
-    	    	
+    	   
+    	//h thermokrasia mporei na mas erthei eite ws Json object eite ws Integer
+    	// frontizoume na to diaxeiristoume katallhla gia na einai to app stathero
     	if(forecast.get("temp").getClass().getSimpleName().equals("JSONObject")) {
     		//json obj
     		setTemp(new DailyTemperature((JSONObject) forecast.get("temp")));
@@ -26,10 +37,9 @@ public class DailyForecast extends Forecast{
     		}    		
     	}    	
     	
-    	setPressure((Integer) forecast.get("pressure"));
-    	
+    	setPressure((Integer) forecast.get("pressure"));    	
     	setHumidity((Integer) forecast.get("humidity"));
-    	
+    	//antistoixa h taxythta tou anemou erxetai ws integer h ws double polles fores
     	if(forecast.get("wind_speed").getClass().getSimpleName().equals("Integer")) {
 			//integer
 			Double d = convertToDouble((Integer) forecast.get("wind_speed"));
@@ -39,8 +49,7 @@ public class DailyForecast extends Forecast{
 			setSpeed((Double)forecast.get("wind_speed"));
 		}
     	
-    	setDeg((Integer) forecast.get("wind_deg"));
-    	
+    	setDeg((Integer) forecast.get("wind_deg"));    	
     	setClouds((Integer) forecast.get("clouds"));
     	
     	JSONArray jsonArray = (JSONArray) forecast.get("weather");    	

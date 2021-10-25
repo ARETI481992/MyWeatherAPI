@@ -1,14 +1,20 @@
 package weatherapi.myAPI;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
+/*
+ * Wriaia provlepsh kairou. Dhmiourgeitai apo ena json object to opoio proilthe apo
+ * request gia hourly forecast.
+ * Kanei extend thn klash Forecast h opoia periexei tis plhrofories pou exoun aneksarthtws typou
+ * Forecasts.
+ * Deite Forecast.java gia ta diafora pedia.
+ */
+
+@SuppressWarnings("serial")
 public class HourlyForecast extends Forecast {
 	
 	public HourlyForecast(JSONObject forecast) {
@@ -27,10 +33,8 @@ public class HourlyForecast extends Forecast {
     		}    		
     	}    	
     	
-    	setPressure((Integer) forecast.get("pressure"));
-    	
-    	setHumidity((Integer) forecast.get("humidity"));
-    	
+    	setPressure((Integer) forecast.get("pressure"));    	
+    	setHumidity((Integer) forecast.get("humidity"));    	
     	if(forecast.get("wind_speed").getClass().getSimpleName().equals("Integer")) {
 			//integer
 			Double d = convertToDouble((Integer) forecast.get("wind_speed"));
@@ -40,10 +44,8 @@ public class HourlyForecast extends Forecast {
 			setSpeed((Double)forecast.get("wind_speed"));
 		}
     	
-    	setDeg((Integer) forecast.get("wind_deg"));
-    	
-    	setClouds((Integer) forecast.get("clouds"));
-    	
+    	setDeg((Integer) forecast.get("wind_deg"));    	
+    	setClouds((Integer) forecast.get("clouds"));    	
     	JSONArray jsonArray = (JSONArray) forecast.get("weather");    	
     	setWeather(new Weather((JSONObject) jsonArray.get(0)));
     	if(getWeather().getMain().equals("Rain")) {
@@ -59,9 +61,5 @@ public class HourlyForecast extends Forecast {
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm:ss");  
     	LocalDateTime now = LocalDateTime.now();  
     	setTimestamp(dtf.format(now));
-    	
-    	//System.out.println(forecast.toString());
-    }
-	
-	
+    }	
 }
