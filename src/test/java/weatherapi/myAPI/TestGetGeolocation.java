@@ -12,7 +12,7 @@ class TestGetGeolocation {
 	void test() {
 		GeoLocator geoloc = new GeoLocator();
 		
-	    assertNotNull(geoloc.fetchCoordinatesBasedOnIP(), "Geoloc returned null instead of CityObject object.");
+	    assertNotNull(geoloc.getCityBasedOnIP(), "Geoloc returned null instead of CityObject object.");
 	}
 
 }

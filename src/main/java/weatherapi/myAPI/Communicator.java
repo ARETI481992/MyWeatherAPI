@@ -1,5 +1,6 @@
 package weatherapi.myAPI;
 
+import weatherapi.backend.Controller;
 import weatherapi.handlers.CurrentForecastHandler;
 import weatherapi.handlers.DailyForecastHandler;
 import weatherapi.handlers.HourlyForecastHandler;
@@ -8,11 +9,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-
-import com.maxmind.geoip2.exception.GeoIp2Exception;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 
 public class Communicator {
 	private String api_key;
+	private Controller recorder;
+	
 
 	public Communicator(){
 		String api_key_file = "api-key";
@@ -29,6 +34,9 @@ public class Communicator {
 			e.printStackTrace();
 		}
 		api_key = sb.toString();
+		
+		//recorder signleton object
+		recorder = Controller.getInstance();
 	}
 	
 	public ArrayList<Forecast> getDailyForecast() {
@@ -38,10 +46,6 @@ public class Communicator {
 			int dt = dailyForecast.get(i).getDt();
 			
 			java.util.Date time=new java.util.Date((long)dt*1000);
-			
-			//System.out.println(time);
-			
-			//TODO Print results
 		}
 		
 		return dailyForecast;
@@ -51,13 +55,8 @@ public class Communicator {
 		// hourly forecast
 		ArrayList<Forecast> hourlyForecast = getForecastByCityName("London", 1);
 		for(int i=0; i<hourlyForecast.size(); i++) {
-			int dt = hourlyForecast.get(i).getDt();
-			
+			int dt = hourlyForecast.get(i).getDt();			
 			java.util.Date time=new java.util.Date((long)dt*1000);
-			
-			//System.out.println(time);
-			
-			//TODO Print results
 		}
 		
 		return hourlyForecast;
@@ -67,7 +66,7 @@ public class Communicator {
 		// current forecast
 		// get the city coordinates based on the machine's ip
 		GeoLocator geoloc = new GeoLocator();
-		CityObject cityObj = geoloc.fetchCoordinatesBasedOnIP();
+		CityObject cityObj = geoloc.getCityBasedOnIP();
 		
 		//get the forecast for the city's coordinates
 		ArrayList<Forecast> currentForecast = getForecastByCityCoordinates(cityObj.getCoord().getLon(), cityObj.getCoord().getLat(), 3);
@@ -104,6 +103,35 @@ public class Communicator {
 	
 	public String getAPIKey() {
 		return api_key;
+	}
+	
+	public void setUnits(String units) {
+		recorder.setcurrentUnits(units);
+	}
+	
+	public CityObject requestCity(String place) {
+		//get city information
+		int responseCode;
+		String query = "https://api.openweathermap.org/data/2.5/weather";
+		query += "?q=" + place;
+		query += "&appid="+api_key;
+				
+		HttpResponse<String> httpResponse = Unirest.get(query).asString();
+		JSONObject jsonResponse = new JSONObject(httpResponse.getBody());
+		
+		if(jsonResponse.get("cod").getClass().getSimpleName() == Integer.class.getSimpleName()) {
+			responseCode = (int) jsonResponse.get("cod");
+		}else {
+			responseCode = (int) Integer.parseInt((String) jsonResponse.get("cod"));
+		}
+		
+		if(responseCode == 200) {
+			CityObject city = new CityObject();
+			city.setCityDetails(jsonResponse);			
+			return city;
+		}
+
+		return null;
 	}
 
 }

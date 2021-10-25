@@ -12,7 +12,6 @@ public class CityObject implements Serializable{
     private String name;
     private Coordination coord;
     private String country;
-    private Integer population;
     private Map<String,String> sys = new HashMap<>();
     
     public void setCityDetails(JSONObject jsonResponse) {
@@ -20,8 +19,10 @@ public class CityObject implements Serializable{
 		JSONObject jsonCoords = (JSONObject) jsonResponse.get("coord");
 		coord.setCoordinates(jsonCoords);
 				
-		this.name = (String) jsonResponse.get("name");
-		
+		setName((String) jsonResponse.get("name"));
+		setId((Integer) jsonResponse.get("id"));
+		JSONObject sys = (JSONObject) jsonResponse.get("sys");
+		setCountry((String) sys.get("country"));
     }
 
     public Map<String, String> getSys() {
@@ -64,11 +65,4 @@ public class CityObject implements Serializable{
         this.country = country;
     }
     
-    public Integer getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Integer population) {
-        this.population = population;
-    }
 }

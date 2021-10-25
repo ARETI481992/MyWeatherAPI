@@ -7,21 +7,20 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import weatherapi.backend.Controller;
+import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.Communicator;
 
 
 public class App {
+	public static Communicator comm;
+	
 	public static void main(String[] args) throws IOException {
-		Communicator comm = new Communicator();
-		
-		comm.getDailyForecast();
-		comm.getHourlyForecast();
-		comm.getCurrentForecast();
-		
+		comm = new Communicator();
+			
 		printWelcomeMessage();
 		while(true) {
 			printMenu();
-			
 			int option = selectOption(1,5);
 						
 			if(option == 1) {
@@ -42,11 +41,54 @@ public class App {
 	}
 	
 	private static void manageCities() {
-		System.out.println("Select one of the following: ");
+		int option = 0;
 		
-		printCityManagementMenu();
-		
-		int option = selectOption(1,3);
+		while(option != 3) {
+			Controller.getInstance().printCityList();
+			System.out.println("Select one of the following: ");		
+			printCityManagementMenu();
+			
+			option = selectOption(1,3);
+			if(option == 1) {
+				System.out.println("Type in the city name to ADD or '0' to cancel:");
+				BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+				String userInput = null;
+				try {
+					userInput = input.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(userInput.equals("0")) {
+					//cancel
+					System.out.println("Canceled city entry.");
+				}else {
+					//request city and then add
+					CityObject obj = comm.requestCity(userInput);
+					if(obj != null) {
+						Controller.getInstance().addNewCity(obj);
+					}else {
+						System.out.println(userInput + " does not exist in the database. Unable to retrieve info.");
+					}
+				}			
+			}else if(option == 2) {
+				System.out.println("Type in the city name to DELETE or '0' to cancel:");
+				BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+				String userInput = null;
+				try {
+					userInput = input.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(userInput.equals("0")) {
+					//cancel
+					System.out.println("Canceled city entry.");
+				}else {
+					Controller.getInstance().deleteCity(userInput);
+				}
+			}
+		}
 	}
 	
 	private static void selectCity() {
@@ -55,6 +97,37 @@ public class App {
 		printCitySelectionMenu();
 		
 		int option = selectOption(1,4);
+		
+		if(option == 1) {
+			// current location
+			Controller.getInstance().selectCurrentCity();			
+		}else if(option == 2) {
+			// from user list
+			Controller.getInstance().selectCityFromList();
+		}else if(option == 3) {
+			// search city (does not add to user list)
+			System.out.println("Type in the city name to search in the database or '0' to cancel:");
+			BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+			String userInput = null;
+			try {
+				userInput = input.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(userInput.equals("0")) {
+				//cancel
+				System.out.println("Canceled city search.");
+			}else {
+				//request city and then set as current
+				CityObject obj = comm.requestCity(userInput);
+				if(obj != null) {
+					Controller.getInstance().setCurrentCity(obj);
+				}else {
+					System.out.println(userInput + " does not exist in the database. Unable to retrieve info.");
+				}
+			}
+		}
 	}
 	
 	private static void weatherForecast() {
@@ -66,11 +139,19 @@ public class App {
 	}
 	
 	private static void selectTemperatureScale() {
-		System.out.println("Select one of the following: ");
-		
+		System.out.println("Select one of the following: ");		
 		printTemperatureScaleMenu();
 		
-		int option = selectOption(1,3);
+		int option = selectOption(1,3);		
+		if(option == 1) {
+			//set scale to Celsius (metric)
+			comm.setUnits("metric");
+			System.out.println("Temperature units set to metric (Celsius).");
+		}else if(option == 2) {
+			//set scale to Fahrenheit (imperial)
+			comm.setUnits("imperial");
+			System.out.println("Temperature units set to imperial (Fahrenheit).");
+		}
 	}
 	
 	

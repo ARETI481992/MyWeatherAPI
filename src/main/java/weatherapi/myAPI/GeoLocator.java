@@ -38,7 +38,7 @@ public class GeoLocator {
 			IP = sb.toString();
 		}
 
-		public CityObject fetchCoordinatesBasedOnIP(){
+		public CityObject getCityBasedOnIP(){
 			try (WebServiceClient client = new WebServiceClient.Builder(621016, "4pawHpVJ2I3hcfZr").host("geolite.info").build()) {
 
 			    InetAddress ipAddress = InetAddress.getByName(IP);

@@ -7,6 +7,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
+import weatherapi.backend.Controller;
 import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.Forecast;
 import weatherapi.myAPI.HourlyForecast;
@@ -52,7 +53,7 @@ public class CurrentForecastHandler extends RequestHandler{
 			query = "https://api.openweathermap.org/data/2.5/onecall";
 			query += "?lat=" + city.getCoord().getLon() + "&lon=" + city.getCoord().getLat();
 			query += "&exlude=minutely,daily,alert";
-			query += "&units=metric";
+			query += "&units="+Controller.getInstance().getcurrentUnits();
 			query += "&appid="+api_key;
 			
 			httpResponse = Unirest.get(query).asString();

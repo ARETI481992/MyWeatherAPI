@@ -1,1 +1,4 @@
-weatherapi/myAPI/AppTest.class
+weatherapi/myAPI/TestRequests.class
+weatherapi/myAPI/TestCommunicator.class
+weatherapi/myAPI/TestGetGeolocation.class
+weatherapi/myAPI/TestForecasts.class

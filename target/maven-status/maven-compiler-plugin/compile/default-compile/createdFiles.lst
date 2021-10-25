@@ -3,6 +3,8 @@ weatherapi/myAPI/ForecastResponse.class
 weatherapi/myAPI/Forecast.class
 weatherapi/myAPI/Weather.class
 weatherapi/myAPI/DailyTemperature.class
+weatherapi/myAPI/DailyForecast.class
+console/app/App.class
 weatherapi/myAPI/Temperature.class
 weatherapi/myAPI/Communicator.class
 weatherapi/handlers/CurrentForecastHandler.class
@@ -11,4 +13,5 @@ weatherapi/handlers/HourlyForecastHandler.class
 weatherapi/myAPI/GeoLocator.class
 weatherapi/handlers/RequestHandler.class
 weatherapi/myAPI/Coordination.class
+weatherapi/myAPI/HourlyForecast.class
 weatherapi/handlers/DailyForecastHandler.class

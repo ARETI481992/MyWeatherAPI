@@ -1,1 +1,4 @@
-/home/thanasis/eclipse-workspace/myAPI/src/test/java/weatherapi/myAPI/AppTest.java
+/home/thanasis/eclipse-workspace/myAPI/src/test/java/weatherapi/myAPI/TestGetGeolocation.java
+/home/thanasis/eclipse-workspace/myAPI/src/test/java/weatherapi/myAPI/TestRequests.java
+/home/thanasis/eclipse-workspace/myAPI/src/test/java/weatherapi/myAPI/TestForecasts.java
+/home/thanasis/eclipse-workspace/myAPI/src/test/java/weatherapi/myAPI/TestCommunicator.java
