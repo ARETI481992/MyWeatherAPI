@@ -3,11 +3,11 @@ package weatherapi.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import console.backend.Controller;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
-import weatherapi.backend.Controller;
 import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.DailyForecast;
 import weatherapi.myAPI.Forecast;
@@ -44,7 +44,7 @@ public class DailyForecastHandler extends RequestHandler {
 			
 			//get daily forecast of city based on lon/lat coordinates
 			query = "https://api.openweathermap.org/data/2.5/onecall";
-			query += "?lat=" + city.getCoord().getLon() + "&lon=" + city.getCoord().getLat();
+			query += "?lat=" + city.getCoord().getLat() + "&lon=" + city.getCoord().getLon();
 			query += "&exlude=minutely,hourly,alert";
 			query += "&units="+Controller.getInstance().getcurrentUnits();
 			query += "&appid="+api_key;

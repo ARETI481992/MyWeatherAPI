@@ -14,8 +14,6 @@ public class Coordination implements Serializable{
 	}
 	
 	public Coordination() {
-		this.lon = lon;
-		this.lat = lat;
 	}
 	
 	public void setCoordinates(JSONObject jsonObj) {

@@ -12,14 +12,30 @@ public class Weather implements Serializable{
     private String icon; 
 
     public Weather(JSONObject jsonObj) {
-    	id = (Integer) jsonObj.get("id");
+    	setId((Integer) jsonObj.get("id"));
     	main = (String) jsonObj.get("main");
-    	description = (String) jsonObj.get("description");
+    	setDescription((String) jsonObj.get("description"));
     	icon = (String) jsonObj.get("icon");    	
     }
     
     public String getMain() {
     	return main;
     }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 }

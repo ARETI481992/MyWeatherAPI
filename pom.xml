@@ -86,6 +86,20 @@
         		</manifest>
       		</archive>
     	 </configuration>
+    	 <executions>
+	      <execution>
+	        <id>default-jar</id>
+	        <phase>package</phase>
+	        <goals>
+	          <goal>jar</goal>
+	        </goals>
+	        <configuration>
+	          <excludes>
+	            <exclude>console/**/*</exclude>
+	          </excludes>
+	        </configuration>
+	      </execution>
+	    </executions>
   		</plugin>
   		<plugin>
    			<groupId>org.apache.maven.plugins</groupId>

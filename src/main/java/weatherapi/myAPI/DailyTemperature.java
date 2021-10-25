@@ -13,52 +13,99 @@ public class DailyTemperature extends Temperature {
     
     public DailyTemperature(JSONObject temp) {
     	if(temp.get("day").getClass().getSimpleName().equals("Integer")) {    		
-    		day = convertToDouble((Integer) temp.get("day"));
+    		setDay(convertToDouble((Integer) temp.get("day")));
     	}else {
-    		day = (Double) temp.get("day");
+    		setDay((Double) temp.get("day"));
     	}
     	
     	if(temp.get("min").getClass().getSimpleName().equals("Integer")) {    		
-    		min = convertToDouble((Integer) temp.get("min"));
+    		setMin(convertToDouble((Integer) temp.get("min")));
     	}else {
-    		min = (Double) temp.get("min");
+    		setMin((Double) temp.get("min"));
     	}
     	
     	if(temp.get("max").getClass().getSimpleName().equals("Integer")) {    		
-    		max = convertToDouble((Integer) temp.get("max"));
+    		setMax(convertToDouble((Integer) temp.get("max")));
     	}else {
-    		max = (Double) temp.get("max");
+    		setMax((Double) temp.get("max"));
     	}
     	
     	if(temp.get("night").getClass().getSimpleName().equals("Integer")) {    		
-    		night = convertToDouble((Integer) temp.get("night"));
+    		setNight(convertToDouble((Integer) temp.get("night")));
     	}else {
-    		night = (Double) temp.get("night");
+    		setNight((Double) temp.get("night"));
     	}
     	
     	if(temp.get("eve").getClass().getSimpleName().equals("Integer")) {    		
-    		eve = convertToDouble((Integer) temp.get("eve"));
+    		setEve(convertToDouble((Integer) temp.get("eve")));
     	}else {
-    		eve = (Double) temp.get("eve");
+    		setEve((Double) temp.get("eve"));
     	}
     	
     	if(temp.get("morn").getClass().getSimpleName().equals("Integer")) {    		
-    		morn = convertToDouble((Integer) temp.get("morn"));
+    		setMorn(convertToDouble((Integer) temp.get("morn")));
     	}else {
-    		morn = (Double) temp.get("morn");
+    		setMorn((Double) temp.get("morn"));
     	}
     	
     }
-    
-    private double convertToDouble(Integer num) {
+
+	private double convertToDouble(Integer num) {
     	int tem = (int) num;
 		return (double) tem;
     }
 
 	@Override
 	public Double getTemperatureDegrees() {
-		// TODO Auto-generated method stub
-		return null;
+		return day;
+	}
+
+	public Double getDay() {
+		return day;
+	}
+
+	public void setDay(Double day) {
+		this.day = day;
+	}
+
+	public Double getMin() {
+		return min;
+	}
+
+	public void setMin(Double min) {
+		this.min = min;
+	}
+
+	public Double getMax() {
+		return max;
+	}
+
+	public void setMax(Double max) {
+		this.max = max;
+	}
+
+	public Double getNight() {
+		return night;
+	}
+
+	public void setNight(Double night) {
+		this.night = night;
+	}
+
+	public Double getEve() {
+		return eve;
+	}
+
+	public void setEve(Double eve) {
+		this.eve = eve;
+	}
+
+	public Double getMorn() {
+		return morn;
+	}
+
+	public void setMorn(Double morn) {
+		this.morn = morn;
 	}
 
 }

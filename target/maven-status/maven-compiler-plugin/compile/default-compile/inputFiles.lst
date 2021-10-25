@@ -1,11 +1,12 @@
+/home/thanasis/eclipse-workspace/myAPI/src/main/java/console/backend/Controller.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/myAPI/HourlyForecast.java
-/home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/backend/Controller.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/console/app/App.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/myAPI/ForecastResponse.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/myAPI/Coordination.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/myAPI/Communicator.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/handlers/RequestHandler.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/myAPI/HourlyTemperature.java
+/home/thanasis/eclipse-workspace/myAPI/src/main/java/console/backend/ForecastViewBuilder.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/myAPI/Forecast.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/handlers/HourlyForecastHandler.java
 /home/thanasis/eclipse-workspace/myAPI/src/main/java/weatherapi/myAPI/DailyForecast.java

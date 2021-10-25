@@ -17,6 +17,7 @@ public class CityObject implements Serializable{
     public void setCityDetails(JSONObject jsonResponse) {
     	coord = new Coordination();
 		JSONObject jsonCoords = (JSONObject) jsonResponse.get("coord");
+		
 		coord.setCoordinates(jsonCoords);
 				
 		setName((String) jsonResponse.get("name"));

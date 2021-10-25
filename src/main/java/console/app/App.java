@@ -3,23 +3,26 @@ package console.app;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import weatherapi.backend.Controller;
+import console.backend.Controller;
 import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.Communicator;
+import weatherapi.myAPI.Forecast;
 
 
 public class App {
 	public static Communicator comm;
 	
 	public static void main(String[] args) throws IOException {
-		comm = new Communicator();
-			
-		printWelcomeMessage();
+		comm = new Communicator();				
+		
 		while(true) {
+			printWelcomeMessage();
+			printCurrentLocation();
 			printMenu();
 			int option = selectOption(1,5);
 						
@@ -72,7 +75,52 @@ public class App {
 					}
 				}			
 			}else if(option == 2) {
-				System.out.println("Type in the city name to DELETE or '0' to cancel:");
+				Controller.getInstance().printCityList();
+				if(Controller.getInstance().getUserCityList().size() == 0) {
+					System.out.println("User list is empty, no cities to delete.");
+				}else {					
+					System.out.println("Type in the city name to DELETE or '0' to cancel:");
+					BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+					String userInput = null;
+					try {
+						userInput = input.readLine();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(userInput.equals("0")) {
+						//cancel
+						System.out.println("Canceled city entry.");
+					}else {
+						Controller.getInstance().deleteCity(userInput);
+					}
+				}				
+			}
+		}
+	}
+	
+	private static void selectCity() {
+		int option = 0;
+		
+		while(option == 0) {
+			System.out.println("Select one of the following: ");
+			printCitySelectionMenu();
+			option = selectOption(1,4);
+			
+			if(option == 1) {
+				// current location
+				Controller.getInstance().selectCurrentCity();			
+			}else if(option == 2) {
+				// from user list
+				if(Controller.getInstance().getUserCityList().size() > 0) {
+					Controller.getInstance().selectCityFromList();
+				}else {
+					System.out.println("User list is empty.");
+					option = 0;
+				}
+			}else if(option == 3) {
+				// search city (does not add to user list)
+				System.out.println("Type in the city name to search in the database or '0' to cancel:");
 				BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 				String userInput = null;
 				try {
@@ -83,51 +131,20 @@ public class App {
 				}
 				if(userInput.equals("0")) {
 					//cancel
-					System.out.println("Canceled city entry.");
+					System.out.println("Canceled city search.");
 				}else {
-					Controller.getInstance().deleteCity(userInput);
+					//request city and then set as current
+					CityObject obj = comm.requestCity(userInput);
+					if(obj != null) {
+						Controller.getInstance().setCurrentCity(obj);
+					}else {
+						System.out.println(userInput + " does not exist in the database. Unable to retrieve info.");
+					}
 				}
 			}
 		}
-	}
-	
-	private static void selectCity() {
-		System.out.println("Select one of the following: ");
 		
-		printCitySelectionMenu();
 		
-		int option = selectOption(1,4);
-		
-		if(option == 1) {
-			// current location
-			Controller.getInstance().selectCurrentCity();			
-		}else if(option == 2) {
-			// from user list
-			Controller.getInstance().selectCityFromList();
-		}else if(option == 3) {
-			// search city (does not add to user list)
-			System.out.println("Type in the city name to search in the database or '0' to cancel:");
-			BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-			String userInput = null;
-			try {
-				userInput = input.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(userInput.equals("0")) {
-				//cancel
-				System.out.println("Canceled city search.");
-			}else {
-				//request city and then set as current
-				CityObject obj = comm.requestCity(userInput);
-				if(obj != null) {
-					Controller.getInstance().setCurrentCity(obj);
-				}else {
-					System.out.println(userInput + " does not exist in the database. Unable to retrieve info.");
-				}
-			}
-		}
 	}
 	
 	private static void weatherForecast() {
@@ -136,6 +153,70 @@ public class App {
 		printWeatherForecastMenu();
 		
 		int option = selectOption(1,4);
+		
+		if(option == 1) {
+			//current location forecast
+			System.out.println("!Getting the current forecast for " + Controller.getInstance().getCurrentCity().getName() +
+					", " + Controller.getInstance().getCurrentCity().getCountry() + 
+					" at lon/lat (" + Controller.getInstance().getCurrentCity().getCoord().getLon() + 
+					", " + Controller.getInstance().getCurrentCity().getCoord().getLat() + ")");
+			
+			String forecastString = null;
+			ArrayList<Forecast> forecastList = comm.getCurrentForecast();
+			if(forecastList.size() > 0) {
+				forecastString = Controller.getInstance().getFvBuilder().buildCurrentWeatherForecast(forecastList);
+			}
+			
+			printForecast(forecastString);
+		}else if(option == 2) {
+			// hourly forecast
+			System.out.println("!Getting the hourly forecast (the next 48 hours) for " + Controller.getInstance().getCurrentCity().getName() +
+					", " + Controller.getInstance().getCurrentCity().getCountry() + 
+					" at lon/lat (" + Controller.getInstance().getCurrentCity().getCoord().getLon() + 
+					", " + Controller.getInstance().getCurrentCity().getCoord().getLat() + ")");
+			
+			String forecastString = null;
+			ArrayList<Forecast> forecastList = comm.getHourlyForecast();
+			if(forecastList.size() > 0) {
+				forecastString = Controller.getInstance().getFvBuilder().buildHourlyWeatherForecast(forecastList);
+			}
+			
+			printForecast(forecastString);
+		}else if(option == 3) {
+			// daily forecast
+			System.out.println("!Getting the daily forecast (the next 5 days) for " + Controller.getInstance().getCurrentCity().getName() +
+					", " + Controller.getInstance().getCurrentCity().getCountry() + 
+					" at lon/lat (" + Controller.getInstance().getCurrentCity().getCoord().getLon() + 
+					", " + Controller.getInstance().getCurrentCity().getCoord().getLat() + ")");
+			
+			String forecastString = null;
+			ArrayList<Forecast> forecastList = comm.getDailyForecast();
+			if(forecastList.size() > 0) {
+				forecastString = Controller.getInstance().getFvBuilder().buildDailyWeatherForecast(forecastList);
+			}
+			
+			printForecast(forecastString);
+		}else {
+			return;
+		}
+		
+		
+		
+		
+		// wait acknowledgment before returning to the main menu
+		System.out.println("Press enter to continue...");
+		int opt = 0;
+		while(opt == 0) {
+			BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				input.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			opt = 1;
+		}
+		
 	}
 	
 	private static void selectTemperatureScale() {
@@ -213,6 +294,22 @@ public class App {
 			}
 		}
 		return opt;
+	}
+	
+	private static void printCurrentLocation() {
+		CityObject obj = Controller.getInstance().getCurrentCity();
+		if(obj != null) {
+			System.out.println("<Current location: " + obj.getName() + ", " + obj.getCountry() + ">");
+		}else {
+			System.out.println("<Current location: Not Set>");
+		}
+		
+	}
+	
+	private static void printForecast(String forecastString) {
+		if(forecastString != null) {
+			System.out.println(forecastString);
+		}		
 	}
 	
 }

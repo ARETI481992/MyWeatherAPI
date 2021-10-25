@@ -1,6 +1,5 @@
 package weatherapi.myAPI;
 
-import weatherapi.backend.Controller;
 import weatherapi.handlers.CurrentForecastHandler;
 import weatherapi.handlers.DailyForecastHandler;
 import weatherapi.handlers.HourlyForecastHandler;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import console.backend.Controller;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
@@ -41,7 +41,7 @@ public class Communicator {
 	
 	public ArrayList<Forecast> getDailyForecast() {
 		// daily forecast
-		ArrayList<Forecast> dailyForecast =  getForecastByCityName("London", 0);
+		ArrayList<Forecast> dailyForecast =  getForecastByCityName(Controller.getInstance().getCurrentCity().getName(), 0);
 		for(int i=0; i<dailyForecast.size(); i++) {
 			int dt = dailyForecast.get(i).getDt();
 			
@@ -53,7 +53,7 @@ public class Communicator {
 	
 	public ArrayList<Forecast> getHourlyForecast() {
 		// hourly forecast
-		ArrayList<Forecast> hourlyForecast = getForecastByCityName("London", 1);
+		ArrayList<Forecast> hourlyForecast = getForecastByCityName(Controller.getInstance().getCurrentCity().getName(), 1);
 		for(int i=0; i<hourlyForecast.size(); i++) {
 			int dt = hourlyForecast.get(i).getDt();			
 			java.util.Date time=new java.util.Date((long)dt*1000);
@@ -64,9 +64,8 @@ public class Communicator {
 	
 	public ArrayList<Forecast> getCurrentForecast() {
 		// current forecast
-		// get the city coordinates based on the machine's ip
-		GeoLocator geoloc = new GeoLocator();
-		CityObject cityObj = geoloc.getCityBasedOnIP();
+		// get the city coordinates based on the machine's ip		
+		CityObject cityObj = Controller.getInstance().getCurrentCity();
 		
 		//get the forecast for the city's coordinates
 		ArrayList<Forecast> currentForecast = getForecastByCityCoordinates(cityObj.getCoord().getLon(), cityObj.getCoord().getLat(), 3);

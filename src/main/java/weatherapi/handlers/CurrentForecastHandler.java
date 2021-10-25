@@ -3,11 +3,11 @@ package weatherapi.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import console.backend.Controller;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
-import weatherapi.backend.Controller;
 import weatherapi.myAPI.CityObject;
 import weatherapi.myAPI.Forecast;
 import weatherapi.myAPI.HourlyForecast;
@@ -51,20 +51,23 @@ public class CurrentForecastHandler extends RequestHandler{
 			
 			//get daily forecast of city based on lon/lat coordinates
 			query = "https://api.openweathermap.org/data/2.5/onecall";
-			query += "?lat=" + city.getCoord().getLon() + "&lon=" + city.getCoord().getLat();
-			query += "&exlude=minutely,daily,alert";
+			query += "?lat=" + city.getCoord().getLat() + "&lon=" + city.getCoord().getLon();
+			query += "&exlude=hourly,daily,alert";
 			query += "&units="+Controller.getInstance().getcurrentUnits();
 			query += "&appid="+api_key;
 			
 			httpResponse = Unirest.get(query).asString();
 			jsonResponse = new JSONObject(httpResponse.getBody());
+						
+			if(jsonResponse.length() == 2) {
+				//request failed
+				System.out.println("!Failed to retrieve data. This is OpenWatherMap's problem");
+				return (ArrayList<Forecast>) currentForecast;
+			}
 			
-			JSONArray daily = (JSONArray) jsonResponse.get("daily");
-			
-			//current hour
-			JSONObject dayObj = (JSONObject) daily.get(0);
-			Forecast day = new HourlyForecast(dayObj);
-			currentForecast.add(day);
+			JSONObject current = (JSONObject) jsonResponse.get("current");			
+			Forecast day = new HourlyForecast(current);
+			currentForecast.add(day);			
 		}
 		return (ArrayList<Forecast>) currentForecast;
 	}
